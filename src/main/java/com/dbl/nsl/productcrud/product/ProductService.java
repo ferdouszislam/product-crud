@@ -12,7 +12,7 @@ public interface ProductService {
 	
 	public List<Product> createProducts(List<Product> products) throws ResponseStatusException;
 	
-	public List<Product> uploadProductPhotos(Map<Long, MultipartFile> productIdToPhotos) throws ResponseStatusException;
+	public List<Product> uploadProductPhotos(Map<String, MultipartFile> productIdToPhotos) throws ResponseStatusException;
 	
 	public Product readProduct(Long productId);
 	

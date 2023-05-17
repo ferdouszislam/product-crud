@@ -37,8 +37,8 @@ public class ProductController {
 		return ResponseEntity.ok(productService.createProducts(products));
 	}
 	
-	@RequestMapping(value = "/mutiple-product-photos", method = RequestMethod.POST)
-	public ResponseEntity<?> uploadProductPhotos(@RequestParam Map<Long, MultipartFile> productIdToPhotos) {
+	@RequestMapping(value = "/upload-mutiple-product-photos", method = RequestMethod.PUT)
+	public ResponseEntity<?> uploadProductPhotos(@RequestParam Map<String, MultipartFile> productIdToPhotos) {
 		return ResponseEntity.ok(productService.uploadProductPhotos(productIdToPhotos));
 	}
 

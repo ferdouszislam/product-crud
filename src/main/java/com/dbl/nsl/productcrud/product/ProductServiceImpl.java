@@ -66,23 +66,27 @@ public class ProductServiceImpl implements ProductService {
 				products, apiKeyHelper.getUsernameFromHeader());
 		for (int i = 0; i < products.size(); i++) {
 			HttpStatusAndMessage v = validateOnCreate(products.get(i));
+			Product p = products.get(i);
 			if (Objects.nonNull(v)) {
 				Log.info("validation fail at index: {}, reason: {}", i, v);
 				v.setMessage(v.getMessage() + " [at index = " + i + "]");
 				throw new ResponseStatusException(v.getStatus(), v.getMessage());
 			}
-			products.get(i).setCreatedBy(apiKeyHelper.getUsernameFromHeader());
+			p.setCreatedBy(apiKeyHelper.getUsernameFromHeader());
+			p = productRepository.saveAndFlush(p);
+			p.setAssetNumber(getAssetNumber(p));
+			products.set(i, productRepository.saveAndFlush(p));
 		}
-		return productRepository.saveAll(products);
+		return products;
 	}
 
 	@Override
-	public List<Product> uploadProductPhotos(Map<Long, MultipartFile> productIdToPhotos) throws ResponseStatusException {
+	public List<Product> uploadProductPhotos(Map<String, MultipartFile> productIdToPhotos) throws ResponseStatusException {
 		Log.info("uploadProductPhotos called with productIds: {}, username: {}", 
 				productIdToPhotos.keySet(), apiKeyHelper.getUsernameFromHeader());
 		List<Product> products = new ArrayList<>();
-		for (Map.Entry<Long, MultipartFile> p : productIdToPhotos.entrySet()) {
-			Long productId = p.getKey();
+		for (Map.Entry<String, MultipartFile> p : productIdToPhotos.entrySet()) {
+			Long productId = Long.valueOf(p.getKey());
 			MultipartFile productPhoto = p.getValue();
 			if (Objects.isNull(productId) || Objects.isNull(productPhoto) || productPhoto.isEmpty()) continue;
 			Product product = productRepository.findById(productId).orElse(null);
