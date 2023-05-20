@@ -46,7 +46,6 @@ public class Product {
 	
 	private Long warrantyInYears;
 	
-	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date warrantyExpireDate;
