@@ -148,7 +148,7 @@ public class ProductServiceImpl implements ProductService {
 		existingProduct = UpdateFieldsHelper
 				.updateFields(existingProduct, product, 
 						Arrays.asList("categoryName", "productName", "serialNumber", 
-								"purchasePrice", "purchaseDate", "warrantyInYears", "warrantyExpireDate"), false);
+								"purchasePrice", "purchaseDate", "warrantyInYears", "warrantyExpireDate"), true);
 		existingProduct.setAssetNumber(getAssetNumber(existingProduct));
 		return productRepository.saveAndFlush(existingProduct);
 	}
